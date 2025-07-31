@@ -3,6 +3,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "./prisma";
 import { comparePassword } from "./hashPassword";
 
+
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -58,13 +60,16 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.email = user.email;
-        token.role = user.role;
+        if ('role' in user) {
+          token.role = user.role;
+        }
       }
 
       return token;
     },
     async session({ session, token }) {
       if(token){
+        session.user = session.user ?? {};
         session.user.email = token.email;
         session.user.role = token.role;
       }

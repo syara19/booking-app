@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 import { useSession, signOut } from "next-auth/react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -16,10 +15,7 @@ import {
     Hotel,
     User,
     Calendar,
-    Settings,
     LogOut,
-    Menu,
-    X,
     Shield
 } from "lucide-react"
 import { UserRole } from "@/lib/generated/prisma"
@@ -34,34 +30,26 @@ export function Navbar() {
     }
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container flex h-14 items-center">
-                {/* Logo */}
+        <header className="sticky  top-0 z-50 px-25 py-5 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="container flex   h-14 items-center">
                 <Link href="/" className="mr-6 flex items-center space-x-2">
-                    <Hotel className="h-6 w-6" />
-                    <span className="hidden font-bold sm:inline-block">
-                        HotelBooking
-                    </span>
+                    <Hotel className="h-10 w-10" />
                 </Link>
-
-                {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-                    <Link href="/" className="transition-colors hover:text-foreground/80">
-                        Beranda
-                    </Link>
+                <nav className="hidden mx-20  md:flex items-center space-x-6 text-sm font-medium">
                     <Link href="/hotels" className="transition-colors hover:text-foreground/80">
                         Hotel
                     </Link>
                     {session && (
                         <Link href="/my-bookings" className="transition-colors hover:text-foreground/80">
-                            Booking Saya
+                            My Bookings
                         </Link>
                     )}
-                      <ModeToggle />
+
                 </nav>
 
+
                 <div className="flex flex-1 items-center justify-end space-x-4">
-                    {/* User Menu */}
+                    <ModeToggle />
                     {session ? (
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -73,16 +61,16 @@ export function Navbar() {
                                 <DropdownMenuLabel className="font-normal">
                                     <div className="flex flex-col space-y-1">
                                         <p className="text-sm font-medium leading-none">
-                                            {session.user.name || session.user.email}
+                                            {session?.user?.name || session?.user?.email}
                                         </p>
                                         <p className="text-xs leading-none text-muted-foreground">
-                                            {session.user.email}
+                                            {session?.user?.email}
                                         </p>
                                     </div>
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
 
-                                {session.user.role === UserRole.ADMIN && (
+                                {session?.user && 'role' in session.user && session.user.role === UserRole.ADMIN && (
                                     <>
                                         <DropdownMenuItem asChild>
                                             <Link href="/admin/dashboard" className="flex items-center">
@@ -104,7 +92,7 @@ export function Navbar() {
                                 <DropdownMenuItem asChild>
                                     <Link href="/my-bookings" className="flex items-center">
                                         <Calendar className="mr-2 h-4 w-4" />
-                                        <span>Booking Saya</span>
+                                        <span>My Bookings</span>
                                     </Link>
                                 </DropdownMenuItem>
 

@@ -93,7 +93,7 @@ export function LoginForm({
               }
               <div className="grid gap-3">
                 <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" {...register("password")} required />
+                <Input placeholder="******" id="password" type="password" {...register("password")} required />
               </div>
               {
                 errors.password && (
