@@ -48,7 +48,7 @@ export default function HotelTable() {
 
     const handleDelete = async (hotelId: string) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/hotels/${hotelId}`, { // Ubah endpoint API
+            const response = await fetch(`/api/hotels/${hotelId}`, { // Ubah endpoint API
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

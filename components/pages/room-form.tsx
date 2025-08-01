@@ -84,7 +84,7 @@ export default function RoomForm({ roomId }: { roomId?: string }) {
     const onSubmit = async (data: RoomFormValues) => {
         setIsLoading(true);
         try {
-            const url = isEdit ? `http://localhost:3000/api/rooms/${roomId}` : 'http://localhost:3000/api/rooms'
+            const url = isEdit ? `/api/rooms/${roomId}` : '/api/rooms'
             const method = isEdit ? 'PUT' : 'POST'
 
             const res = await fetch(url, {

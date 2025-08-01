@@ -53,7 +53,7 @@ export default function RoomTable() {
     const handleDelete = async (roomId: string) => {
         try {
             console.log(roomId)
-            const response = await fetch(`http://localhost:3000/api/rooms/${roomId}`, {
+            const response = await fetch(`/api/rooms/${roomId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
