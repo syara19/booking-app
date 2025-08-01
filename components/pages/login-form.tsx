@@ -19,6 +19,7 @@ import { Alert, AlertDescription } from "../ui/alert"
 import { useRouter } from "next/navigation"
 import { Loader2Icon } from "lucide-react"
 import Link from "next/link"
+import { set } from "zod"
 
 
 
@@ -50,6 +51,7 @@ export function LoginForm({
 
       if (result?.error) {
         setError(result.error);
+        setLoading(false);
       } else {
         router.push("/");
       }
@@ -71,8 +73,8 @@ export function LoginForm({
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             {error && (
-              <Alert>
-                <AlertDescription>{error}</AlertDescription>
+              <Alert className="mb-4">
+                <AlertDescription className="text-red-800 font-bold">{error}</AlertDescription>
               </Alert>
             )}
             <div className="flex flex-col gap-6">

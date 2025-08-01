@@ -24,9 +24,8 @@ import { ModeToggle } from "./button-theme"
 export function Navbar() {
     const { data: session } = useSession()
 
-    console.log(session)
     const handleSignOut = () => {
-        signOut({ callbackUrl: "/login" })
+        signOut({ callbackUrl: "/" })
     }
 
     return (

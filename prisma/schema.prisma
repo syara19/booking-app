@@ -33,6 +33,13 @@ enum PaymentStatus {
   REFUNDED
 }
 
+enum RoomTypeEnum {
+  STANDARD
+  DELUXE
+  SUITE
+  FAMILY
+}
+
 model User {
   id        String    @id @default(uuid()) @map("id")
   username  String    @unique
@@ -83,10 +90,11 @@ model Hotel {
   address      String
   city         String
   country      String    @default("Indonesia")
+  imageUrl     String?   
   description  String?
   starRating   Decimal   @db.Decimal(2, 1)
-  checkInTime  DateTime  @map("check_in_time")
-  checkOutTime DateTime  @map("check_out_time")
+  checkInTime  String  @map("check_in_time")
+  checkOutTime String  @map("check_out_time")
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
@@ -95,23 +103,13 @@ model Hotel {
   @@map("hotels")
 }
 
-model RoomType {
-  id          String    @id @default(uuid()) @map("id")
-  name        String    @unique  
-  description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
 
-  rooms       Room[]    
-
-  @@map("room_types")
-}
 
 model Room {
   id          String    @id @default(uuid()) @map("id")
   hotelId     String
   roomNumber  String
-  roomTypeId  String
+  roomType    RoomTypeEnum
   pricePerNight Int     
   capacity    Int
   description String?
@@ -119,8 +117,7 @@ model Room {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  hotel       Hotel    @relation(fields: [hotelId], references: [id])
-  roomType    RoomType @relation(fields: [roomTypeId], references: [id])
+  hotel       Hotel    @relation(fields: [hotelId], references: [id],  onDelete: Cascade)
   bookings    Booking[]
 
   @@unique([hotelId, roomNumber])  
@@ -140,7 +137,7 @@ model Booking {
   updatedAt     DateTime      @updatedAt
 
   customer      Customer      @relation(fields: [customerId], references: [id])
-  room          Room          @relation(fields: [roomId], references: [id])
+  room          Room          @relation(fields: [roomId], references: [id], onDelete: Cascade)
   payment       Payment?      
   review        Review?       
   @@map("bookings")

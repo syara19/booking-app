@@ -1,5 +1,8 @@
-import { BookingStatus, PaymentStatus } from "@/lib/generated/prisma";
-import { Decimal } from "@/lib/generated/prisma/runtime/library";
+import {
+  BookingStatus,
+  PaymentStatus,
+  RoomTypeEnum,
+} from "@/lib/generated/prisma";
 import { hashPassword } from "@/lib/hashPassword";
 import { prisma } from "@/lib/prisma";
 
@@ -46,183 +49,138 @@ async function main() {
     },
   });
 
-  const roomTypeStandard = await prisma.roomType.upsert({
-    where: { name: "Standard" },
-    update: {},
-    create: {
-      name: "Standard",
-      description: "A basic room with essential amenities.",
-    },
-  });
-
-  const roomTypeDeluxe = await prisma.roomType.upsert({
-    where: { name: "Deluxe" },
-    update: {},
-    create: {
-      name: "Deluxe",
-      description: "A more spacious room with enhanced amenities.",
-    },
-  });
-
-  const roomTypeSuite = await prisma.roomType.upsert({
-    where: { name: "Suite" },
-    update: {},
-    create: {
-      name: "Suite",
-      description: "Luxurious and expansive room with multiple areas.",
-    },
-  });
-
-  const hotelA = await prisma.hotel.upsert({
-    where: { id: "some-id-for-hotel-a" },
+  const hotel1 = await prisma.hotel.upsert({
+    where: { id: "hotel-uuid-1" },
     update: {},
     create: {
       name: "Grand Hyatt Jakarta",
-      address: "Jl. M.H. Thamrin Kav. 28-30, Jakarta Pusat",
+      address: "Jl. M.H. Thamrin Kav. 28-30, Jakarta",
       city: "Jakarta",
       country: "Indonesia",
-      description: "A luxurious hotel in the heart of Jakarta.",
-      starRating: new Decimal(4.8),
-      checkInTime: new Date("2000-01-01T15:00:00Z"), // Example time
-      checkOutTime: new Date("2000-01-01T12:00:00Z"), // Example time
+      imageUrl: "https://placehold.co/1920x1080.png",
+      description: "Hotel mewah di pusat kota Jakarta.",
+      starRating: 5.0,
+      checkInTime: "12.00",
+      checkOutTime: "10.00",
     },
   });
 
-  const hotelB = await prisma.hotel.upsert({
-    where: { id: "some-id-for-hotel-b" },
+  const hotel2 = await prisma.hotel.upsert({
+    where: { id: "hotel-uuid-2" },
     update: {},
     create: {
-      name: "The Ritz-Carlton Bali",
-      address: "Jalan Raya Nusa Dua Selatan, Lot III, Sawangan, Nusa Dua",
-      city: "Denpasar",
+      name: "Hotel Santika Premiere Bintaro",
+      address:
+        "Jl. Boulevard Bintaro Jaya Sektor 7 Blok B7/N1, Tangerang Selatan",
+      city: "Tangerang Selatan",
       country: "Indonesia",
-      description: "An exclusive resort offering stunning ocean views.",
-      starRating: new Decimal(4.9),
-      checkInTime: new Date("2000-01-01T15:00:00Z"),
-      checkOutTime: new Date("2000-01-01T12:00:00Z"),
+      imageUrl: "https://placehold.co/1920x1080.png",
+      description: "Hotel nyaman di area Bintaro.",
+      starRating: 4.5,
+      checkInTime: "12.00",
+      checkOutTime: "10.00",
     },
   });
 
-  const room1A = await prisma.room.upsert({
-    where: { hotelId_roomNumber: { hotelId: hotelA.id, roomNumber: "101" } },
+  const room1Hotel1 = await prisma.room.upsert({
+    where: { hotelId_roomNumber: { hotelId: hotel1.id, roomNumber: "101" } },
     update: {},
     create: {
-      hotelId: hotelA.id,
+      hotelId: hotel1.id,
       roomNumber: "101",
-      roomTypeId: roomTypeStandard.id,
-      pricePerNight: 1000000,
-      capacity: 2,
-      description: "Standard room with city view.",
-      isAvailable: true,
-    },
-  });
-
-  const room2A = await prisma.room.upsert({
-    where: { hotelId_roomNumber: { hotelId: hotelA.id, roomNumber: "205" } },
-    update: {},
-    create: {
-      hotelId: hotelA.id,
-      roomNumber: "205",
-      roomTypeId: roomTypeDeluxe.id,
+      roomType: RoomTypeEnum.DELUXE,
       pricePerNight: 1500000,
-      capacity: 3,
-      description: "Deluxe room with pool view.",
+      capacity: 2,
+      description: "Kamar deluxe dengan pemandangan kota.",
       isAvailable: true,
     },
   });
 
-  const room1B = await prisma.room.upsert({
-    where: { hotelId_roomNumber: { hotelId: hotelB.id, roomNumber: "B1" } },
+  const room2Hotel1 = await prisma.room.upsert({
+    where: { hotelId_roomNumber: { hotelId: hotel1.id, roomNumber: "205" } },
     update: {},
     create: {
-      hotelId: hotelB.id,
-      roomNumber: "B1",
-      roomTypeId: roomTypeSuite.id,
+      hotelId: hotel1.id,
+      roomNumber: "205",
+      roomType: RoomTypeEnum.SUITE,
       pricePerNight: 3000000,
       capacity: 4,
-      description: "Ocean view suite with private balcony.",
+      description: "Suite mewah dengan ruang tamu terpisah.",
+      isAvailable: true,
+    },
+  });
+
+  const room1Hotel2 = await prisma.room.upsert({
+    where: { hotelId_roomNumber: { hotelId: hotel2.id, roomNumber: "301" } },
+    update: {},
+    create: {
+      hotelId: hotel2.id,
+      roomNumber: "301",
+      roomType: RoomTypeEnum.STANDARD,
+      pricePerNight: 750000,
+      capacity: 2,
+      description: "Kamar standar yang nyaman.",
       isAvailable: true,
     },
   });
 
   const booking1 = await prisma.booking.upsert({
-    where: { id: "booking-id-1" }, // Use a static ID for initial upsert for demonstration
+    where: { id: "booking-uuid-1" },
     update: {},
     create: {
+      id: "booking-uuid-1",
       customerId: customer.id,
-      roomId: room1A.id,
+      roomId: room1Hotel1.id,
       checkInDate: new Date("2025-08-10"),
       checkOutDate: new Date("2025-08-12"),
-      totalPrice: new Decimal(2000000), // 2 nights * 1,000,000
+      totalPrice: 3000000.0,
       bookingStatus: BookingStatus.CONFIRMED,
       paymentStatus: PaymentStatus.PAID,
     },
   });
+  console.log(`Created booking with id: ${booking1.id}`);
 
   const booking2 = await prisma.booking.upsert({
-    where: { id: "booking-id-2" },
+    where: { id: "booking-uuid-2" },
     update: {},
     create: {
+      id: "booking-uuid-2",
       customerId: customer.id,
-      roomId: room2A.id,
+      roomId: room1Hotel2.id,
       checkInDate: new Date("2025-09-01"),
-      checkOutDate: new Date("2025-09-05"),
-      totalPrice: new Decimal(6000000), // 4 nights * 1,500,000
+      checkOutDate: new Date("2025-09-03"),
+      totalPrice: 1500000.0,
       bookingStatus: BookingStatus.PENDING,
       paymentStatus: PaymentStatus.PENDING,
     },
   });
-
-  const booking3 = await prisma.booking.upsert({
-    where: { id: "booking-id-3" },
-    update: {},
-    create: {
-      customerId: customer.id,
-      roomId: room1B.id,
-      checkInDate: new Date("2025-07-20"),
-      checkOutDate: new Date("2025-07-22"),
-      totalPrice: new Decimal(6000000), // 2 nights * 3,000,000
-      bookingStatus: BookingStatus.COMPLETED,
-      paymentStatus: PaymentStatus.PAID,
-    },
-  });
+  console.log(`Created booking with id: ${booking2.id}`);
 
   const payment1 = await prisma.payment.upsert({
     where: { bookingId: booking1.id },
     update: {},
     create: {
       bookingId: booking1.id,
-      amount: booking1.totalPrice,
+      amount: 3000000.0,
       paymentMethod: "Credit Card",
-      transactionId: "TRX-12345",
+      transactionId: "TRX123456789",
       status: PaymentStatus.PAID,
     },
   });
-
-  const payment3 = await prisma.payment.upsert({
-    where: { bookingId: booking3.id },
-    update: {},
-    create: {
-      bookingId: booking3.id,
-      amount: booking3.totalPrice,
-      paymentMethod: "Bank Transfer",
-      transactionId: "TRX-67890",
-      status: PaymentStatus.PAID,
-    },
-  });
+  console.log(`Created payment for booking id: ${payment1.bookingId}`);
 
   const review1 = await prisma.review.upsert({
-    where: { bookingId: booking3.id },
+    where: { bookingId: booking1.id },
     update: {},
     create: {
-      bookingId: booking3.id,
+      bookingId: booking1.id,
       customerId: customer.id,
       rating: 5,
-      comment: "Excellent stay! Highly recommend.",
+      comment:
+        "Pengalaman menginap yang luar biasa! Kamar bersih dan staf ramah.",
     },
   });
 }
-
 main()
   .catch((e) => {
     console.error(e);
