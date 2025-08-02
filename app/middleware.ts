@@ -12,12 +12,12 @@ export async function middleware(req: NextRequest) {
 
     if (!token) {
       const url = new URL(`/`, req.url);
-      url.searchParams.set('callbackUrl', pathname); // Simpan URL yang ingin dituju
+      url.searchParams.set('callbackUrl', pathname);
       return NextResponse.redirect(url);
     }
 
     if (token.role !== 'ADMIN') {
-      return NextResponse.redirect(new URL('/', req.url)); // Arahkan ke halaman utama
+      return NextResponse.redirect(new URL('/', req.url)); 
     }
   }
 
@@ -25,5 +25,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'], // Middleware ini hanya akan berjalan untuk route di dalam folder /admin
+  matcher: ['/admin/:path*'], 
 };

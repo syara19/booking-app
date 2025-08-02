@@ -21,17 +21,19 @@ export default function AdminSidebar() {
     return (
         <>
             <div className='w-full'>
-                <SidebarHeader className="border-b border-sidebar-border">
-                    <div className="p-2 flex gap-2">
-                        <ShieldUser className='h-8 w-8' />
-                        <div className='flex items-center'>
-                            <h1 className="text-md  font-semibold">Admin Dashboard</h1>
+                <Link href="/">
+                    <SidebarHeader className="border-b border-sidebar-border">
+                        <div className="p-2 flex gap-2">
+                            <ShieldUser className='h-8 w-8' />
+                            <div className='flex items-center'>
+                                <h1 className="text-md  font-semibold">Admin Dashboard</h1>
+                            </div>
                         </div>
-                    </div>
-                    <div className='flex justify-center mb-2'>
-                        <ModeToggle />
-                    </div>
-                </SidebarHeader>
+                        <div className='flex justify-center mb-2'>
+                            <ModeToggle />
+                        </div>
+                    </SidebarHeader>
+                </Link>
 
                 <SidebarContent className="p-2">
                     <SidebarMenu>

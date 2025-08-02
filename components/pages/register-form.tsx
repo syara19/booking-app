@@ -29,7 +29,6 @@ export function RegisterForm({
 
     const router = useRouter()
     const [loading, setLoading] = useState(false)
-    // const [selectedRole, setSelectedRole] = useState<"CUSTOMER" | "ADMIN">("CUSTOMER")
     const [error, setError] = useState("")
     const {
         register,
@@ -59,7 +58,6 @@ export function RegisterForm({
                 },
                 body: JSON.stringify(data),
             })
-            console.log(res)
             reset()
             router.push("/login")
         } catch (err) {

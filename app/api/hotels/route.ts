@@ -9,7 +9,7 @@ export async function GET() {
   try {
     const hotels = await prisma.hotel.findMany({
       orderBy: {
-        createdAt: "desc",
+        starRating: "desc",
       },
     });
     return NextResponse.json(hotels);

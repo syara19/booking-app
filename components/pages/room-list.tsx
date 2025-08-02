@@ -9,7 +9,6 @@ interface RoomListProps {
 }
 
 export default function RoomList({ hotelId }: RoomListProps) {
-    // const hotelRooms = rooms.filter(room => room.hotelId === hotelId);
 
     return (
         <Card>

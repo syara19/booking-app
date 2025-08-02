@@ -11,7 +11,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function HotelTable() {
-    // const { toast } = useToast();
     const router = useRouter();
     const [hotels, setHotels] = useState<Hotel[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +19,7 @@ export default function HotelTable() {
     useEffect(() => {
         const fetchHotels = async () => {
             try {
-                const response = await fetch('/api/hotels'); // Ubah endpoint API
+                const response = await fetch('/api/hotels'); 
                 if (!response.ok) {
                     throw new Error('Gagal mengambil data hotel dari API.');
                 }
@@ -36,7 +35,6 @@ export default function HotelTable() {
         fetchHotels();
     }, []);
 
-    console.log(hotels)
 
     if (isLoading) {
         return <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">Loading...</main>;
@@ -48,7 +46,7 @@ export default function HotelTable() {
 
     const handleDelete = async (hotelId: string) => {
         try {
-            const response = await fetch(`/api/hotels/${hotelId}`, { // Ubah endpoint API
+            const response = await fetch(`/api/hotels/${hotelId}`, { 
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -60,18 +58,9 @@ export default function HotelTable() {
                 throw new Error(errorData.message || 'Gagal menghapus hotel.');
             }
 
-            // toast({
-            //     title: "Hotel Dihapus",
-            //     description: "Hotel berhasil dihapus.",
-            // });
             router.prefetch('/admin/hotels')
-            // router.refresh();
         } catch (error: any) {
-            // toast({
-            //     title: "Gagal Menghapus",
-            //     description: error.message,
-            //     variant: "destructive",
-            // });
+        
             console.log(error)
         }
     };

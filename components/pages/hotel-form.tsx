@@ -36,12 +36,7 @@ export default function HotelForm({ hotelId }: { hotelId?: string }) {
                         setImageUrl(dataHotel.imageUrl);
                     }
                 } catch (err) {
-                    console.log(err);
-                    toast({
-                        title: "Error",
-                        description: "Something went wrong",
-                        variant: "destructive",
-                    });
+                    console.error(err);
                 } finally {
                     setIsLoading(false);
                 }
@@ -49,10 +44,7 @@ export default function HotelForm({ hotelId }: { hotelId?: string }) {
         };
         fetchData();
     }, [hotelId, toast]);
-    console.log(hotel)
 
-    // Perbaikan utama: Pindahkan defaultValues ke dalam useForm
-    // dan tambahkan logika untuk memastikan tipe data yang benar
     const form = useForm<HotelFormValues>({
         resolver: zodResolver(hotelSchema),
         defaultValues: {
@@ -110,11 +102,7 @@ export default function HotelForm({ hotelId }: { hotelId?: string }) {
             router.refresh();
         } catch (err) {
             console.error(err);
-            toast({
-                title: "Error",
-                description: err instanceof Error ? err.message : "Terjadi kesalahan saat menyimpan data.",
-                variant: "destructive",
-            });
+         
         } finally {
             setIsLoading(false);
         }
@@ -170,7 +158,7 @@ export default function HotelForm({ hotelId }: { hotelId?: string }) {
                                             <Input
                                                 type="number"
                                                 step="0.1"
-                                                min="1"
+                                                min="0"
                                                 max="5"
                                                 placeholder="e.g., 4.5"
                                                 {...field}

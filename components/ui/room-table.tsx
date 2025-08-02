@@ -4,8 +4,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Button } from "../ui/button";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'; // Import useRouter
-import { Room, Hotel } from '@/lib/generated/prisma'; // Sesuaikan path
+import { useRouter } from 'next/navigation'; 
+import { Room, Hotel } from '@/lib/generated/prisma'; 
 import { Badge } from "./badge";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./alert-dialog";
 import { useToast } from "@/hooks/use-toast";
@@ -18,7 +18,7 @@ type RoomWithHotel = Room & {
 
 export default function RoomTable() {
     const { toast } = useToast();
-    const router = useRouter(); // Inisialisasi useRouter
+    const router = useRouter(); 
     const [rooms, setRooms] = useState<RoomWithHotel[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);

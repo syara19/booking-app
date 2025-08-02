@@ -1,4 +1,3 @@
-// "use client";
 
 import AdminRoom from "@/components/pages/admin-room";
 import { authOptions } from "@/lib/auth";

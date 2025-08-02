@@ -11,15 +11,16 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import { loginSchema, LoginInput } from "@/lib/validate/auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Alert, AlertDescription } from "../ui/alert"
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { Loader2Icon } from "lucide-react"
 import Link from "next/link"
-import { set } from "zod"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 
 
 
@@ -27,6 +28,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -55,9 +57,11 @@ export function LoginForm({
       } else {
         router.push("/");
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError("Something went wrong");
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -103,7 +107,7 @@ export function LoginForm({
                 )
               }
               <div className="flex flex-col gap-3">
-                <Button {...(loading && { disabled: true })}  type="submit" className="w-full">
+                <Button {...(loading && { disabled: true })} type="submit" className="w-full">
                   {loading ? <Loader2Icon className="animate-spin" /> : "Login"}
                 </Button>
                 <Button disabled variant="outline" className="w-full btn-disabled">

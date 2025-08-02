@@ -29,16 +29,13 @@ export default function RoomForm({ roomId }: { roomId?: string }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch hotels
                 const responseHotel = await fetch('/api/hotels');
                 if (!responseHotel.ok) throw new Error('Error fetching hotels');
                 const dataHotel = await responseHotel.json();
                 setHotels(dataHotel);
 
-                // Fetch specific room only if editing
                 if (roomId) {
                     const responseRoom = await fetch(`/api/rooms/${roomId}`);
-                    console.log(responseRoom)
                     if (!responseRoom.ok) throw new Error('Error fetching room');
                     const dataRoom = await responseRoom.json();
                     setRoom(dataRoom);
@@ -58,7 +55,6 @@ export default function RoomForm({ roomId }: { roomId?: string }) {
         fetchData();
     }, [roomId]);
 
-    console.log(room)
 
     const defaultValues: Partial<RoomFormValues> = room ? {
         ...room,
